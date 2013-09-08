@@ -23,7 +23,7 @@ Simply call the CSRFFilter() filter from init.go:
     package app
 
     import (
-        csrf "github.com/cbonello/revel-csrf"
+        "github.com/cbonello/revel-csrf"
         "github.com/robfig/revel"
     )
 
