@@ -1,0 +1,131 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<header class="hero-unit" style="background-color:#A9F16C">
+    <div class="container">
+        <div class="row">
+            <div class="hero-text">
+                <h1>It works!</h1>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" style="padding-bottom: 25px;">
+        <a href="/Logout" class="btn btn-success" data-toggle="tooltip"
+            title="Clear session to force generation of a new CSRF token">Clear Session</a>
+        <a href="#AlterModal" id="alterCSRFButton" role="button" class="btn btn-danger"
+            data-toggle="tooltip" title="Alter CSRF token so that subsequent connections with server fail">Alter CSRF Token</a>
+    </div>
+    <div class="row">
+        <form class="form-inline" action="/Hello" method="POST">
+            <input type="text" name="name" />
+            <input type="hidden" id="CSRFToken" name="csrf_token" value="{{ .csrf_token }}" />
+            <button type="submit" class="btn btn-primary">Send (POST Method)</button>
+        </form>
+    </div>
+    <div class="row" style="padding-bottom: 25px;">
+        <form id="AJAXForm" class="form-inline">
+            <input id="AJAXFormName" type="text" name="name" />
+            <button type="submit" class="btn btn-primary">Send (AJAX POST Call)</button>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span2">CSRF token:</div>
+        <div id="CSRFTokenDisplay" class="span10">{{ .csrf_token }}</div>
+    </div>
+</div>
+<div class="container" id="cookies">
+    <h3>Cookies</h3>
+</div>
+
+<div id="AlterModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="AlterModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="AlterModalLabel">Warning</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            Hidden CSRF token (in form) has been tampered and subsequent connections
+            to server should fail. Clear session to restore.
+         </p>
+         <p>
+            For some reason, CSRF token will still have its old value if you display
+            the source code. But it has really been updated, trust me!
+         </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+
+<script src="/public/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+function listCookies() {
+    var cookies = document.cookie.split(';');
+    for (var i = 0 ; i < cookies.length; i++) {
+        c = cookies[i].split('=');
+        $("#cookies").append('<p><div class="row"><div class="span2">'+c[0]+'</div><div class="span10">'+c[1]+'</div></div></p>');
+    }
+}
+
+function csrfSafeMethod(method) {
+    // These HTTP methods do not require CSRF protection.
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+$.ajaxSetup({
+    cache: false,
+    crossDomain: false,
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type)) {
+            xhr.setRequestHeader("X-CSRF-Token", $("#CSRFTokenDisplay").text());
+        }
+    }
+});
+
+$( document ).ready(function() {
+    $("#alterCSRFButton").click(function() {
+        var alteredToken = $("#CSRFToken").val().concat("REVEL");
+        $("input[id='CSRFToken']").val(alteredToken);
+        $("#CSRFTokenDisplay").text(alteredToken);
+        $("#AlterModal").modal("show");
+    });
+
+    $("#AJAXForm").submit(function(event){
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "/Hello",
+            data: {
+                name: $("#AJAXFormName").val()
+            },
+            success: function(data) {
+                // Switch to HTML code returned by server on success.
+                jQuery("body").html(data);
+            },
+            error: function(jqXHR, status, errorThrown) {
+                alert(jqXHR.statusText);
+            },
+        });
+    });
+
+    listCookies();
+});
+</script>
+
+{{template "footer.html" .}}
