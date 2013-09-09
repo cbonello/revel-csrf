@@ -72,7 +72,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 		// requests. See http://erlend.oftedal.no/blog/?blogid=118
 		sentToken := r.Header.Get(headerName)
 		if sentToken == "" {
-			sentToken = r.PostFormValue(fieldName)
+			sentToken = c.Params.Get(fieldName)
 		}
 		revel.TRACE.Printf("CSRF token received: '%s'", sentToken)
 
