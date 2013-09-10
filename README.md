@@ -52,7 +52,7 @@ Insert a hidden input field named `csrf_token` in your forms.
         <button type="submit">Send</button>
     </form>
 
-You can also use following javascript code to perform AJAX calls (jQuery 1.5 and newer).
+Javascript-code sample to perform AJAX calls with jQuery 1.5 and newer. 
 
     function csrfSafeMethod(method) {
         // HTTP methods that do not require CSRF protection.
@@ -66,6 +66,24 @@ You can also use following javascript code to perform AJAX calls (jQuery 1.5 and
             }
         }
     });
+
+	$("#AJAXForm").submit(function(event){
+		event.preventDefault();
+	    $.ajax({
+	        type: "POST",
+	        url: "/Hello",
+	        data: {
+	            name: $("#AJAXFormName").val()
+	        },
+	        success: function(data) {
+	            // Switch to HTML code returned by server on success.
+	            jQuery("body").html(data);
+	        },
+	        error: function(jqXHR, status, errorThrown) {
+	            alert(jqXHR.statusText);
+	        },
+	    });
+	});
 
 A demo application is provided in the samples directory. To launch it:
 
