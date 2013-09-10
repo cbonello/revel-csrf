@@ -52,6 +52,21 @@ Insert a hidden input field named `csrf_token` in your forms.
         <button type="submit">Send</button>
     </form>
 
+You can also use following javascript code to perform AJAX calls (jQuery 1.5 and newer).
+
+    function csrfSafeMethod(method) {
+        // HTTP methods that do not require CSRF protection.
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false,
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", {{ .csrf_token }});
+            }
+        }
+    });
+
 A demo application is provided in the samples directory. To launch it:
 
     revel run github.com/cbonello/revel-csrf/samples/demo
@@ -59,4 +74,7 @@ A demo application is provided in the samples directory. To launch it:
 ## TODO
 
 * Routes exemption.
+* Logger.
+* Unique token per-page.
+* Configuration options.
 * Test cases.
