@@ -2,7 +2,7 @@ package controllers
 
 import (
     "github.com/robfig/revel"
-    "csrf-nosurf/app/routes"
+    "github.com/cbonello/revel-csrf/samples/demo/app/routes"
     "fmt"
 )
 
