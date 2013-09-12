@@ -34,13 +34,13 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
     realToken = generateNewToken(c)
   } else {
     realToken = tokenCookie
-    glog.V(0).Infof("Session's CSRF token: '%s'", realToken)
+    glog.V(2).Infof("Session's CSRF token: '%s'", realToken)
     if len(realToken) != tokenLength {
       // Wrong length; token has either been tampered with, we're migrating
       // onto a new algorithm for generating tokens, or a new session has
       // been initiated. In any case, a new token is generated and the
       // error will be detected later.
-      glog.V(0).Infof("Bad CSRF token length: found %d, expected %d",
+      glog.V(2).Infof("Bad CSRF token length: found %d, expected %d",
         len(realToken), tokenLength)
       realToken = generateNewToken(c)
     }
@@ -51,7 +51,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
   // See http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Safe_methods
   safeMethod, _ := regexp.MatchString("^(GET|HEAD|OPTIONS|TRACE)$", r.Method)
   if !safeMethod {
-    glog.V(0).Infof("Unsafe %s method...", r.Method)
+    glog.V(2).Infof("Unsafe %s method...", r.Method)
     if r.URL.Scheme == "https" {
       // See OWASP; Checking the Referer Header.
       referer, err := url.Parse(r.Header.Get("Referer"))
@@ -75,7 +75,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
     if sentToken == "" {
       sentToken = c.Params.Get(fieldName)
     }
-    glog.V(0).Infof("CSRF token received: '%s'", sentToken)
+    glog.V(2).Infof("CSRF token received: '%s'", sentToken)
 
     if len(sentToken) != len(realToken) {
       c.Result = c.Forbidden(errBadToken)
@@ -88,7 +88,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
       }
     }
   }
-  glog.V(0).Infoln("CSRF token successfully checked.")
+  glog.V(2).Infoln("CSRF token successfully checked.")
 
   fc[0](c, fc[1:])
 }
@@ -101,7 +101,7 @@ func sameOrigin(u1, u2 *url.URL) bool {
 // Generate a new CSRF token.
 func generateNewToken(c *revel.Controller) string {
   token := generateToken()
-  glog.V(0).Infof("Generated new CSRF Token: '%s'", token)
+  glog.V(2).Infof("Generated new CSRF Token: '%s'", token)
   c.Session[cookieName] = token
   return token
 }
