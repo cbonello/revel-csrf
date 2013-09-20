@@ -21,7 +21,7 @@ var (
 	errNoReferer  = "REVEL_CSRF: A secure request contained no Referer or its value was malformed."
 	errBadReferer = "REVEL_CSRF: Same-origin policy failure."
 	errBadToken   = "REVEL_CSRF: tokens mismatch."
-	safeMethods = regexp.MustCompile("^(GET|HEAD|OPTIONS|TRACE)$")
+	safeMethods   = regexp.MustCompile("^(GET|HEAD|OPTIONS|TRACE)$")
 )
 
 var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
@@ -70,15 +70,15 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 
 		sentToken := ""
 		if ajaxSupport := revel.Config.BoolDefault("csrf.ajax", false); ajaxSupport {
-		  // Accept CSRF token in the custom HTTP header X-CSRF-Token, for ease
-		  // of use with popular JavaScript toolkits which allow insertion of
-		  // custom headers into all AJAX requests.
-		  // See http://erlend.oftedal.no/blog/?blogid=118
-		  sentToken = r.Header.Get(headerName)
+			// Accept CSRF token in the custom HTTP header X-CSRF-Token, for ease
+			// of use with popular JavaScript toolkits which allow insertion of
+			// custom headers into all AJAX requests.
+			// See http://erlend.oftedal.no/blog/?blogid=118
+			sentToken = r.Header.Get(headerName)
 		}
 		if sentToken == "" {
 			// Get CSRF token from form.
-		  sentToken = c.Params.Get(fieldName)
+			sentToken = c.Params.Get(fieldName)
 		}
 		glog.V(2).Infof("REVEL-CSRF: Token received from client: '%s'", sentToken)
 
@@ -101,4 +101,3 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 func sameOrigin(u1, u2 *url.URL) bool {
 	return (u1.Scheme == u2.Scheme && u1.Host == u2.Host)
 }
-

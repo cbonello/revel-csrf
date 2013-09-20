@@ -13,8 +13,8 @@ func init() {
 		revel.FilterConfiguringFilter, // A hook for adding or removing per-Action filters.
 		revel.ParamsFilter,            // Parse parameters into Controller.Params.
 		revel.SessionFilter,           // Restore and write the session cookie.
-		 csrf.CSRFFilter,              // CSRF prevention.
 		revel.FlashFilter,             // Restore and write the flash cookie.
+		 csrf.CSRFFilter,              // CSRF prevention.
 		revel.ValidationFilter,        // Restore kept validation errors and save new ones from cookie.
 		revel.I18nFilter,              // Resolve the requested language
 		revel.InterceptorFilter,       // Run interceptors around the action.

@@ -2,8 +2,8 @@
 package csrf
 
 import (
-	"github.com/golang/glog"
 	"fmt"
+	"github.com/golang/glog"
 	pathPackage "path"
 	"sync"
 )
@@ -19,9 +19,9 @@ var (
 	exemptionsFullPath = struct {
 		sync.RWMutex
 		list map[string]struct{}
-	} {
-			list: make(map[string]struct{}),
-		}
+	}{
+		list: make(map[string]struct{}),
+	}
 
 	exemptionsGlobs globPath
 )
