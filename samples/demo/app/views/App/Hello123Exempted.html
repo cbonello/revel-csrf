@@ -1,0 +1,52 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<header class="hero-unit" style="background-color:#A9F16C">
+    <div class="container">
+        <div class="row">
+            <div class="hero-text">
+                <h1>{{if .name}}Hello {{ .name }}{{else}}Hello anonymous user{{end}}</h1>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            {{template "flash.html" .}}
+        </div>
+    </div>
+    <div class="row">
+        <h2>This route is exempted from CSRF checks.</h2>
+        <p>
+            See <b>app/init.go</b>: csrf.ExemptedGlob("/Hello[0-9]?3/Exempted")
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            Clicking on the Go Back link will trigger generation of a new index
+            page and reset the CSRF token to a valid value. Click on your browser's
+            Back button if you want to keep the altered CSRF token. This behaviour
+            is caused by the demo implementation and does not exhibits any bug in
+            revel-csrf.
+        </p>
+        <p>
+            <b>Note:</b> Clicking on Go Back is your best option if you reached
+            this page through an AJAX call. But that will reset the CSRF token to
+            a valid value!
+        </p>
+    </div>
+    <div class="row">
+        <p>{{.help1}}</p>
+        <p>{{.help2}}</p>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <a href="/">Go Back</a>
+        </div>
+    </div>
+</div>
+
+{{template "footer.html" .}}
