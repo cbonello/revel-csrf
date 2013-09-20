@@ -11,6 +11,10 @@ Code is based on the `nosurf` package implemented by
 
     go get github.com/cbonello/revel-csrf
 
+A demo application is provided in the samples directory. To launch it:
+
+    revel run github.com/cbonello/revel-csrf/samples/demo
+
 ## Configuration options
 
 Revel-csrf supports following configuration options in `app.conf`:
@@ -90,9 +94,7 @@ Javascript-code sample to perform AJAX calls with jQuery 1.5 and newer.
 	    });
 	});
 
-A demo application is provided in the samples directory. To launch it:
-
-    revel run github.com/cbonello/revel-csrf/samples/demo
+You can call `csrf.ExemptedFullPath()` or `csrf.ExemptedGlob()` to exempt routes from CSRF checks. See `app/init.go` in demo application.
 
 ## TODO
 
