@@ -18,9 +18,38 @@
             {{template "flash.html" .}}
         </div>
     </div>
-</div>
-
-<div class="container">
+{{if .exempted}}
+    <div class="row">
+        <h2>This route is exempted from CSRF checks.</h2>
+        <p>
+            See <b>github.com/cbonello/revel-csrf/samples/demo/app/init.go</b>: csrf.ExemptedFullPath("/HelloExempted")
+        </p>
+    </div>
+    <div class="row">
+        <p>
+            Clicking on the Go Back link will trigger generation of a new index
+            page and reset the CSRF token to a valid value. Click on your browser's
+            Back button if you want to keep the altered CSRF token. This behaviour
+            is caused by the demo implementation and does not exhibits any bug in
+            revel-csrf.
+        </p>
+        <p>
+            <b>Note:</b> Clicking on Go Back is your best option if you reached
+            this page through an AJAX call. But that will reset the CSRF token to
+            a valid value!
+        </p>
+    </div>
+{{else}}
+    <div class="row">
+        <h2>This route is not exempted from CSRF checks.</h2>
+    </div>
+    <div class="row">
+        <p>
+            <b>Note:</b> Clicking on Go Back is your best option if you reached
+            this page through an AJAX call.
+        </p>
+    </div>
+{{end}}
     <div class="row">
         <div class="span12">
             <a href="/">Go Back</a>

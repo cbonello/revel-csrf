@@ -28,17 +28,71 @@
             data-toggle="tooltip" title="Alter CSRF token so that subsequent connections with server fail">Alter CSRF Token</a>
     </div>
     <div class="row">
-        <form class="form-inline" action="/Hello" method="POST">
-            <input type="text" name="name" />
-            <input type="hidden" id="CSRFToken" name="csrf_token" value="{{ .csrf_token }}" />
-            <button type="submit" class="btn btn-primary">Send (POST Method)</button>
-        </form>
+        <p>
+            The <i>/HelloExempted</i> and <i>/Hello123/Exempted</i> routes are
+            exempted from CSRF checking and should be functional even if the
+            CSRF token has been tampered.
+        </p>
     </div>
-    <div class="row" style="padding-bottom: 25px;">
-        <form id="AJAXForm" class="form-inline">
-            <input id="AJAXFormName" type="text" name="name" />
-            <button type="submit" class="btn btn-primary">Send (AJAX POST Call)</button>
-        </form>
+    <div class="row">
+        <div class="span6">
+          <h2><i>/Hello</i> Route</h2>
+        </div>
+        <div class="span6">
+          <h2><i>/HelloExempted</i> Route</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <form class="form-inline" action="/Hello" method="POST">
+                <input type="text" name="name" />
+                <input type="hidden" id="CSRFToken" name="csrf_token" value="{{ .csrf_token }}" />
+                <button type="submit" class="btn btn-primary">Send (POST Method)</button>
+            </form>
+        </div>
+        <div class="span6">
+            <form class="form-inline" action="/HelloExempted" method="POST">
+                <input type="text" name="name" />
+                <input type="hidden" id="CSRFToken" name="csrf_token" value="{{ .csrf_token }}" />
+                <button type="submit" class="btn btn-primary">Send (POST Method)</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <form id="AJAXForm" class="form-inline">
+                <input id="AJAXFormName" type="text" name="name" />
+                <button type="submit" class="btn btn-primary">Send (AJAX POST Call)</button>
+            </form>
+        </div>
+        <div class="span6">
+            <form id="AJAXFormExemptedRoute" class="form-inline">
+                <input id="AJAXFormNameExemptedRoute" type="text" name="name" />
+                <button type="submit" class="btn btn-primary">Send (AJAX POST Call)</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6 offset6">
+          <h2><i>/Hello123/Exempted</i> Route</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6 offset6">
+            <form class="form-inline" action="/Hello123/Exempted" method="POST">
+                <input type="text" name="name" />
+                <input type="hidden" id="CSRFToken" name="csrf_token" value="{{ .csrf_token }}" />
+                <button type="submit" class="btn btn-primary">Send (POST Method)</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6 offset6">
+            <form id="AJAXFormExemptedRoute123" class="form-inline">
+                <input id="AJAXFormNameExemptedRoute123" type="text" name="name" />
+                <button type="submit" class="btn btn-primary">Send (AJAX POST Call)</button>
+            </form>
+        </div>
     </div>
 </div>
 <div class="container">
@@ -59,7 +113,11 @@
     <div class="modal-body">
         <p>
             Hidden CSRF token (in form) has been tampered and subsequent connections
-            to server should fail. Clear session to restore.
+            to server on the <i>/Hello</i> route should fail. Clear session to restore.
+         </p>
+         <p>
+            Access to <i>/HelloExempted</i> and <i>/Hello123/Exempted</i> should not
+            be affected.
          </p>
          <p>
             For some reason, CSRF token will still have its old value if you display
@@ -113,6 +171,44 @@ $( document ).ready(function() {
             url: "/Hello",
             data: {
                 name: $("#AJAXFormName").val()
+            },
+            success: function(data) {
+                // Switch to HTML code returned by server on success.
+                jQuery("body").html(data);
+            },
+            error: function(jqXHR, status, errorThrown) {
+                alert(jqXHR.statusText);
+            },
+        });
+    });
+
+    $("#AJAXFormExemptedRoute").submit(function(event){
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "/HelloExempted",
+            data: {
+                name: $("#AJAXFormNameExemptedRoute").val()
+            },
+            success: function(data) {
+                // Switch to HTML code returned by server on success.
+                jQuery("body").html(data);
+            },
+            error: function(jqXHR, status, errorThrown) {
+                alert(jqXHR.statusText);
+            },
+        });
+    });
+
+    $("#AJAXFormExemptedRoute123").submit(function(event){
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "/Hello123/Exempted",
+            data: {
+                name: $("#AJAXFormNameExemptedRoute123").val()
             },
             success: function(data) {
                 // Switch to HTML code returned by server on success.

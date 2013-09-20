@@ -7,18 +7,23 @@ prevention for the [Revel framework](https://github.com/robfig/revel).
 Code is based on the `nosurf` package implemented by
 [Justinas Stankevičius](https://github.com/justinas/nosurf).
 
-## Limitations
-
-Package does not yet include provision to exempt specific routes from
-CSRF checks.
-
 ## Installation
 
     go get github.com/cbonello/revel-csrf
 
+## Configuration options
+
+Revel-csrf supports following configuration options in `app.conf`:
+
+* `csrf.ajax`
+A boolean value that indicates whether or not `revel-csrf` should support the injection and verification of CSRF tokens for XMLHttpRequests. Default value is `false`.
+
+* `csrf.token.length`
+An integer value that defines the number of characters that should be found within CSRF tokens. Token length should be in [32..512] and default value is 32 characters.
+
 ## Operating instructions
 
-Simply call the CSRFFilter() filter from init.go:   
+Simply call the CSRFFilter() filter in `app/init.go` right after `revel.SessionFilter`. The CSRF token is saved in the session cookie.  
 
     package app
 
@@ -35,8 +40,8 @@ Simply call the CSRFFilter() filter from init.go:
 		    revel.FilterConfiguringFilter, // A hook for adding or removing per-Action filters.
 		    revel.ParamsFilter,            // Parse parameters into Controller.Params.
 		    revel.SessionFilter,           // Restore and write the session cookie.
-		    revel.FlashFilter,             // Restore and write the flash cookie.
 		     csrf.CSRFFilter,              // CSRF prevention.
+		    revel.FlashFilter,             // Restore and write the flash cookie.
 		    revel.ValidationFilter,        // Restore kept validation errors and save new ones from cookie.
 		    revel.I18nFilter,              // Resolve the requested language
 		    revel.InterceptorFilter,       // Run interceptors around the action.
@@ -91,8 +96,9 @@ A demo application is provided in the samples directory. To launch it:
 
 ## TODO
 
-* Routes exemption.
-* Logger.
 * Unique token per-page.
-* Configuration options.
 * Test cases.
+
+## CONTRIBUTORS
+* Otto Bretz
+* Allen Dang

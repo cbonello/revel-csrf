@@ -6,6 +6,8 @@ module:testrunner
 
 GET     /                                       App.Index
 POST    /Hello                                  App.Hello
+POST    /HelloExempted                          App.Hello
+POST    /Hello123/Exempted                      App.Hello123Exempted
 GET     /Logout/                                App.Logout
 
 # Ignore favicon requests
