@@ -1,4 +1,4 @@
-// Synchronizer Token Pattern implementation.
+// Package csrf is a synchronizer Token Pattern implementation.
 //
 // See [OWASP] https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet
 package csrf
@@ -24,6 +24,7 @@ var (
 	safeMethods   = regexp.MustCompile("^(GET|HEAD|OPTIONS|TRACE|WS)$")
 )
 
+// CSRFFilter implements the CSRF filter.
 var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 	r := c.Request.Request
 

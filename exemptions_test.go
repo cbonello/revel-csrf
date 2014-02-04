@@ -5,7 +5,6 @@ import (
 )
 
 func TestExemptedFullPath(t *testing.T) {
-	//hand := New(nil)
 	path := "/Hello"
 
 	ExemptedFullPath(path)
@@ -20,10 +19,9 @@ func TestExemptedFullPath(t *testing.T) {
 }
 
 func TestExemptedFullPaths(t *testing.T) {
-	//hand := New(nil)
 	paths := []string{"/home", "/news", "/help"}
-	ExemptedFullPaths(paths...)
 
+	ExemptedFullPaths(paths...)
 	for _, v := range paths {
 		if !IsExempted(v) {
 			t.Errorf("%v should be exempted, but it isn't", v)
@@ -31,14 +29,12 @@ func TestExemptedFullPaths(t *testing.T) {
 	}
 
 	other := "/accounts"
-
 	if IsExempted(other) {
-		t.Errorf("%v is exempted, but it shouldn't be")
+		t.Errorf("%v is exempted, but it shouldn't be", other)
 	}
 }
 
 func TestExemptedGlob(t *testing.T) {
-	//hand := New(nil)
 	glob := "/[m-n]ail"
 
 	ExemptedGlob(glob)
@@ -67,25 +63,23 @@ func TestExemptedGlob(t *testing.T) {
 func TestExemptedGlobs(t *testing.T) {
 	slice := []string{"/", "/accounts/*", "/post/?*"}
 	matching := []string{"/", "/accounts/", "/accounts/johndoe", "/post/1", "/post/123"}
-
 	nonMatching := []string{"", "/accounts",
 		// Glob's * and ? don't match a forward slash.
 		"/accounts/johndoe/posts",
 		"/post/",
 	}
 
-	//hand := New(nil)
 	ExemptedGlobs(slice...)
 
 	for _, v := range matching {
 		if !IsExempted(v) {
-			t.Error("%v should be exempted, but it isn't.")
+			t.Errorf("%v should be exempted, but it isn't.", v)
 		}
 	}
 
 	for _, v := range nonMatching {
 		if IsExempted(v) {
-			t.Error("%v shouldn't be exempted, but it is")
+			t.Errorf("%v shouldn't be exempted, but it is", v)
 		}
 	}
 }

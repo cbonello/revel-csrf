@@ -1,3 +1,5 @@
+// Package csrf is a synchronizer Token Pattern implementation.
+//
 // Management of routes exempted from CSRF checks.
 package csrf
 
@@ -26,7 +28,7 @@ var (
 	exemptionsGlobs globPath
 )
 
-// Checks if given path is exempt from CSRF checks.
+// IsExempted checks whether given path is exempt from CSRF checks or not.
 func IsExempted(path string) bool {
 	exemptionsFullPath.RLock()
 	_, found := exemptionsFullPath.list[path]
@@ -52,7 +54,7 @@ func IsExempted(path string) bool {
 	return false
 }
 
-// Exempts an exact path from CSRF checks.
+// ExemptedFullPath exempts one exact path from CSRF checks.
 func ExemptedFullPath(path string) {
 	glog.V(2).Infof("REVEL-CSRF: Adding exemption '%s'...", path)
 	exemptionsFullPath.Lock()
@@ -60,13 +62,14 @@ func ExemptedFullPath(path string) {
 	exemptionsFullPath.Unlock()
 }
 
+// ExemptedFullPath exempts exact paths from CSRF checks.
 func ExemptedFullPaths(paths ...string) {
 	for _, v := range paths {
 		ExemptedFullPath(v)
 	}
 }
 
-// Exempts a path from CSRF checks using pattern matching.
+// ExemptedGlob exempts one path from CSRF checks using pattern matching.
 // See http://golang.org/pkg/path/#Match
 func ExemptedGlob(path string) {
 	glog.V(2).Infof("REVEL-CSRF: Adding exemption GLOB '%s'...", path)
@@ -75,6 +78,7 @@ func ExemptedGlob(path string) {
 	exemptionsGlobs.Unlock()
 }
 
+// ExemptedGlobs exempts paths from CSRF checks using pattern matching.
 func ExemptedGlobs(paths ...string) {
 	for _, v := range paths {
 		ExemptedGlob(v)
