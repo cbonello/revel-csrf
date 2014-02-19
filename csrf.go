@@ -5,7 +5,6 @@ package csrf
 
 import (
 	"crypto/subtle"
-	"github.com/golang/glog"
 	"github.com/robfig/revel"
 	"net/url"
 	"regexp"
@@ -36,13 +35,13 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 		realToken = generateNewToken(c)
 	} else {
 		realToken = tokenCookie
-		glog.V(2).Infof("REVEL-CSRF: Session's token: '%s'", realToken)
+		revel.TRACE.Printf("REVEL-CSRF: Session's token: '%s'\n", realToken)
 		if len(realToken) != lengthCSRFToken {
 			// Wrong length; token has either been tampered with, we're migrating
 			// onto a new algorithm for generating tokens, or a new session has
 			// been initiated. In any case, a new token is generated and the
 			// error will be detected later.
-			glog.V(2).Infof("REVEL_CSRF: Bad token length: found %d, expected %d",
+			revel.TRACE.Printf("REVEL_CSRF: Bad token length: found %d, expected %d",
 				len(realToken), lengthCSRFToken)
 			realToken = generateNewToken(c)
 		}
@@ -53,7 +52,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 	// See http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Safe_methods
 	unsafeMethod := !safeMethods.MatchString(r.Method)
 	if unsafeMethod && !IsExempted(r.URL.Path) {
-		glog.V(2).Infof("REVEL-CSRF: Processing unsafe '%s' method...", r.Method)
+		revel.TRACE.Printf("REVEL-CSRF: Processing unsafe '%s' method...", r.Method)
 		if r.URL.Scheme == "https" {
 			// See [OWASP]; Checking the Referer Header.
 			referer, err := url.Parse(r.Header.Get("Referer"))
@@ -81,7 +80,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 			// Get CSRF token from form.
 			sentToken = c.Params.Get(fieldName)
 		}
-		glog.V(2).Infof("REVEL-CSRF: Token received from client: '%s'", sentToken)
+		revel.TRACE.Printf("REVEL-CSRF: Token received from client: '%s'", sentToken)
 
 		if len(sentToken) != len(realToken) {
 			c.Result = c.Forbidden(errBadToken)
@@ -92,7 +91,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 			c.Result = c.Forbidden(errBadToken)
 			return
 		}
-		glog.V(2).Infoln("REVEL-CSRF: Token successfully checked.")
+		revel.TRACE.Println("REVEL-CSRF: Token successfully checked.")
 	}
 
 	fc[0](c, fc[1:])
