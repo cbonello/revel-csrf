@@ -8,7 +8,7 @@ import (
 	pathPackage "path"
 	"sync"
 
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 )
 
 // I'm not cetain that we need a mutex because exempted routes are generally

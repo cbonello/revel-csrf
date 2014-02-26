@@ -2,7 +2,7 @@ revel-csrf
 ==========
 
 `revel-csrf` implements Cross-Site Request Forgery (CSRF) attacks
-prevention for the [Revel framework](https://github.com/robfig/revel).
+prevention for the [Revel framework](https://github.com/revel/cmd/revel).
 
 Code is based on the `nosurf` package implemented by
 [Justinas Stankevičius](https://github.com/justinas/nosurf).
@@ -33,7 +33,7 @@ Simply call the CSRFFilter() filter in `app/init.go`.
 
     import (
         "github.com/cbonello/revel-csrf"
-        "github.com/robfig/revel"
+        "github.com/revel/revel"
     )
 
     func init() {

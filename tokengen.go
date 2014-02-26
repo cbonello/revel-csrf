@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"io"
 )
 

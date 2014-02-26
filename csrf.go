@@ -5,7 +5,7 @@ package csrf
 
 import (
 	"crypto/subtle"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"net/url"
 	"regexp"
 )
