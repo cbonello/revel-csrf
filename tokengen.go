@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"io"
 )
 

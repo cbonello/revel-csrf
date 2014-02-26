@@ -1,9 +1,9 @@
 package controllers
 
 import (
-    "github.com/robfig/revel"
-    "github.com/cbonello/revel-csrf/samples/demo/app/routes"
-    "fmt"
+	"fmt"
+	"github.com/cbonello/revel-csrf/samples/demo/app/routes"
+	"github.com/revel/revel"
 )
 
 type App struct {

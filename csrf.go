@@ -6,7 +6,7 @@ package csrf
 import (
 	"crypto/subtle"
 	"github.com/golang/glog"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"net/url"
 	"regexp"
 )
