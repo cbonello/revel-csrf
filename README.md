@@ -2,7 +2,7 @@ revel-csrf
 ==========
 
 `revel-csrf` implements Cross-Site Request Forgery (CSRF) attacks
-prevention for the [Revel framework](https://github.com/revel/cmd/revel).
+prevention for the [Revel framework](https://github.com/revel/revel).
 
 Code is based on the `nosurf` package implemented by
 [Justinas Stankevičius](https://github.com/justinas/nosurf).
