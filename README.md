@@ -71,7 +71,7 @@ Javascript-code sample to perform AJAX calls with jQuery 1.5 and newer.
         crossDomain: false,
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
-                xhr.setRequestHeader("X-CSRFToken", {{ .csrf_token }});
+                xhr.setRequestHeader("X-CSRF-Token", {{ .csrf_token }});
             }
         }
     });
