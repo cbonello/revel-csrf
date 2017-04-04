@@ -5,9 +5,10 @@ package csrf
 
 import (
 	"crypto/subtle"
-	"github.com/revel/revel"
 	"net/url"
 	"regexp"
+
+	"github.com/revel/revel"
 )
 
 const (
@@ -47,7 +48,7 @@ var CSRFFilter = func(c *revel.Controller, fc []revel.Filter) {
 		}
 	}
 
-	c.RenderArgs[fieldName] = realToken
+	c.ViewArgs[fieldName] = realToken
 
 	// See http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Safe_methods
 	unsafeMethod := !safeMethods.MatchString(r.Method)
