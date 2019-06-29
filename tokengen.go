@@ -23,7 +23,7 @@ func generateNewToken(c *revel.Controller) (token string) {
 	// Due to base64 encoding, CSRF tokens cannot have null bytes and therefore
 	// can safely be used as session values in Revel.
 	token = base64.StdEncoding.EncodeToString(bytes)
-	revel.TRACE.Printf("REVEL-CSRF: Generated new Token: '%s'\n", token)
+	revel.AppLog.Infof("REVEL-CSRF: Generated new Token: '%s'\n", token)
 	c.Session[cookieName] = token
 	return
 }
