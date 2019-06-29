@@ -35,7 +35,7 @@ func IsExempted(path string) bool {
 	_, found := exemptionsFullPath.list[path]
 	exemptionsFullPath.RUnlock()
 	if found {
-		revel.TRACE.Printf("REVEL-CSRF: Ignoring exempted route '%s'...\n", path)
+		revel.AppLog.Infof("REVEL-CSRF: Ignoring exempted route '%s'...\n", path)
 		return true
 	}
 
@@ -48,7 +48,7 @@ func IsExempted(path string) bool {
 			panic(fmt.Sprintf("REVEL-CSRF: malformed glob pattern: %#v", err))
 		}
 		if found {
-			revel.TRACE.Printf("REVEL-CSRF: Ignoring exempted route '%s'...", path)
+			revel.AppLog.Infof("REVEL-CSRF: Ignoring exempted route '%s'...", path)
 			return true
 		}
 	}
@@ -57,7 +57,7 @@ func IsExempted(path string) bool {
 
 // ExemptedFullPath exempts one exact path from CSRF checks.
 func ExemptedFullPath(path string) {
-	revel.TRACE.Printf("REVEL-CSRF: Adding exemption '%s'...\n", path)
+	revel.AppLog.Infof("REVEL-CSRF: Adding exemption '%s'...\n", path)
 	exemptionsFullPath.Lock()
 	exemptionsFullPath.list[path] = struct{}{}
 	exemptionsFullPath.Unlock()
@@ -73,7 +73,7 @@ func ExemptedFullPaths(paths ...string) {
 // ExemptedGlob exempts one path from CSRF checks using pattern matching.
 // See http://golang.org/pkg/path/#Match
 func ExemptedGlob(path string) {
-	revel.TRACE.Printf("REVEL-CSRF: Adding exemption GLOB '%s'...\n", path)
+	revel.AppLog.Infof("REVEL-CSRF: Adding exemption GLOB '%s'...\n", path)
 	exemptionsGlobs.Lock()
 	exemptionsGlobs.list = append(exemptionsGlobs.list, path)
 	exemptionsGlobs.Unlock()
